@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Contact List</title>
+        <link rel="stylesheet" href="Webdev2.css">
+        <script type="text/javascript" src="Webdev2.js"></script>
+    </head>
+    <body>
+        <h1>Contact List</h1>
+        <button class="open_prompt" onclick="open_popup_element('add_contact_popup')">+</button>
+        <table id="table">
+            <tbody>
+                <tr>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Email Address</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </tbody>
+        </table>
+        <div id="add_contact_popup">
+            <h2>Create New Contact</h2>
+            <form onsubmit="return false">
+                <input type="text" placeholder="Last Name" id="last_name" pattern="[a-zA-Z ]{2,32}">
+                <input type="text" placeholder="First Name" id="first_name" pattern="[a-zA-Z ]{2,32}">
+                <input type="email" placeholder="Email Address" id="email" pattern="[a-zA-Z\d ]+@[a-zA-Z ]+.[a-z]{2,4}$">
+                <input type="text" placeholder="Contact" id="contact" pattern="\d{11}">
+                <button type="submit" onclick="verify_information('add')">Create Contact</button>
+            </form>
+        </div>
+        <div id="update_contact_popup">
+            <h2>Update Contact</h2>
+            <form onsubmit="return false">
+                <input type="text" placeholder="Last Name" id="last_name_update" pattern="[a-zA-Z ]{2,32}">
+                <input type="text" placeholder="First Name" id="first_name_update" pattern="[a-zA-Z ]{2,32}">
+                <input type="email" placeholder="Email Address" id="email_update" pattern="[a-zA-Z\d ]+@[a-zA-Z ]+.[a-z]{2,4}$">
+                <input type="text" placeholder="Contact" id="contact_update" pattern="\d{11}">
+                <button type="submit" onclick="verify_information('update')">Update Contact</button>
+            </form>
+        </div>
+    </body>
+</html>
