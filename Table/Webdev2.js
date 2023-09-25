@@ -1,21 +1,54 @@
 let Global_update_index
 
 function open_popup_element(id){
-    const popup = document.getElementById(id)
-    popup.style.display = "flex"
+    // const popup = document.getElementById(id)
+    // popup.style.display = "flex"
+    const row = document.createElement("tr");
+    switch(id){
+        case `add_contact_popup` : 
+            row.innerHTML(`
+            <div id="add_contact_popup">
+                <h2>Create New Contact</h2>
+                <form onsubmit="return false">
+                    <input type="text" placeholder="Last Name" id="last_name" required>
+                    <input type="text" placeholder="First Name" id="first_name" required>
+                    <input type="email" placeholder="Email Address" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$" required>
+                    <input type="text" placeholder="Contact" id="contact" pattern="[0-9]{11}" required>
+                    <button type="submit" onclick="verify_information('add')">Create Contact</button>
+                </form>
+            </div>
+            `)
+            document.getElementsByTagName[0].appendChild(row)
+            break
+        case `update_contact_popup` :
+            row.innerHTML(`
+            <div id="update_contact_popup">
+                <h2>Update Contact</h2>
+                <form onsubmit="return false">
+                    <input type="text" placeholder="Last Name" id="last_name_update" required>
+                    <input type="text" placeholder="First Name" id="first_name_update" required>
+                    <input type="email" placeholder="Email Address" id="email_update" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$" required>
+                    <input type="text" placeholder="Contact" id="contact_update" pattern="[0-9]{11}" required>
+                    <button type="submit" onclick="verify_information('update')">Update Contact</button>
+                </form>
+            </div>
+            `)
+            document.getElementsByTagName[0].appendChild(row)
+            break
+    }
 }
 
 function close_popup_element(id){
-    const popup = document.getElementById(id)
-    popup.style.display = "none"
+    // const popup = document.getElementById(id)
+    // popup.style.display = "none"
+    document.getElementById(id).remove()
 }
 
 function verify_information(type){
     const information = credential_names()
     for(let property of information){
-        const input = document.getElementById(type === `update` ? `${property}_update` : property).validity
-        if(input.patternMismatch || input.valueMissing || input.rangeOverflow){
-            return false
+        if(!document.getElementById(type === `update` ? `${property}_update` : property).checkValidity()){
+            return
         }
     }
     switch(type){
@@ -78,4 +111,8 @@ function delete_contact(button){
 
 function credential_names(){
     return ["last_name","first_name","email","contact"]
+}
+
+function get_initial_contacts(){
+
 }
