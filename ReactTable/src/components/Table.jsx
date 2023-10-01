@@ -1,23 +1,28 @@
-import React, {Component} from "react"
+import { useState, useEffect } from "react"
+import  React  from "react"
 
-class Table extends Component{
-    constructor(){
-        super()
-        this.state = {
-            list: {}
-        }
-    }
+const Table = ({operations:{toggle,getCurrent}})=>{
+    const [retData,setRetData] = useState({})
 
-    componentDidMount(){
-        fetch('https://doited-error.000webhostapp.com/read.php')
-        .then(response => response.json())
+    useEffect(()=>{
+        fetch('http://192.168.191.12/ContactListBackendPHP/read.php')
+        .then(response=>response.json())
         .then(response => {
-            this.setState({list : response.data})
+            setRetData(response.data)
+        })
+    })
+
+    const deleteRow = (id)=>{
+        fetch('http://192.168.191.12/ContactListBackendPHP/delete.php',{
+            method: "POST",
+            headers: new Headers({
+                "Content-Type": "application/x-www-form-urlencoded"
+            }),
+            body: "id=" + id
         })
     }
 
-    render(){
-        return(
+    return(
             <table>
                 <tbody>
                     <tr>
@@ -26,35 +31,29 @@ class Table extends Component{
                         <th>Email</th>
                         <th>Contact Number</th>
                     </tr>
-                    <TableRow list = {this.state.list} />
+                    {
+                        Object.keys(retData).map(key=>{
+                            return(
+                                <TableRow key={key + "tr"} {...{list:retData[key],operations:{deleteRow:deleteRow,getCurrent:getCurrent,toggle:toggle}}} />
+                            )
+                        })
+                    }
                 </tbody>
             </table>
-        );
-    }
+    )
 }
 
-class TableRow extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            list: props.list
-        }
-    }
-
-    componentDidMount(){
-        console.warn(this.state.list)
-    }
-
-    render(){
-        return(
+const TableRow = ({list,operations:{deleteRow, toggle, getCurrent}})=>{
+    return(
             <tr>
-                <td>{this.state.list.lastName}</td>
-                <td>bruh</td>
-                <td>bruh</td>
-                <td>bruh</td>
+                <td>{list.lastName}</td>
+                <td>{list.firstName}</td>
+                <td>{list.email}</td>
+                <td>{list.number}</td>
+                <td><button className="updatebtn" onClick={() => {toggle(true);getCurrent(list)}}>Update</button></td>
+                <td><button className="deletebtn"onClick={() => deleteRow(list.id)}>Delete</button></td>
             </tr>
-        );
-    }
+    )
 }
 
 export default Table
