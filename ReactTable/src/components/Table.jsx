@@ -5,15 +5,13 @@ const Table = ({operations:{toggle,getCurrent}})=>{
     const [retData,setRetData] = useState({})
 
     useEffect(()=>{
-        fetch('http://192.168.191.12/ContactListBackendPHP/read.php')
+        fetch('https://todolist-sample.000webhostapp.com/read.php')
         .then(response=>response.json())
-        .then(response => {
-            setRetData(response.data)
-        })
+        .then(response=>setRetData(response.data))
     })
 
     const deleteRow = (id)=>{
-        fetch('http://192.168.191.12/ContactListBackendPHP/delete.php',{
+        fetch('https://todolist-sample.000webhostapp.com/delete.php',{
             method: "POST",
             headers: new Headers({
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -24,13 +22,15 @@ const Table = ({operations:{toggle,getCurrent}})=>{
 
     return(
             <table>
-                <tbody>
+                <thead>
                     <tr>
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th>Email</th>
                         <th>Contact Number</th>
                     </tr>
+                </thead>
+                <tbody>
                     {
                         Object.keys(retData).map(key=>{
                             return(

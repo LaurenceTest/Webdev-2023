@@ -8,17 +8,19 @@ const ContactPopup = ({toggle,type,current})=>{
     const [cNumberValidity,setCNumberValidity] = useState({valid:true,errMsg:""})
 
     function addContact(fName,lName,email,contactNumber){
-        fetch('http://192.168.191.12/ContactListBackendPHP/add.php',{
+        fetch('https://todolist-sample.000webhostapp.com/add.php',{
             method: "POST",
             headers: new Headers({
                 "Content-Type": "application/x-www-form-urlencoded"
             }),
             body: `fname=${fName}&lname=${lName}&emailAdd=${email}&contactNum=${contactNumber}`
         })
+        .then(reply=>reply.json())
+        .then(reply=>console.log(reply.message))
     }
 
     function updateRow(id,fname,lname,emailAdd,contactNum,email){
-        fetch('http://192.168.191.12/ContactListBackendPHP/edit.php',{
+        fetch('https://todolist-sample.000webhostapp.com/edit.php',{
             method: "POST",
             headers: new Headers({
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -37,18 +39,18 @@ const ContactPopup = ({toggle,type,current})=>{
      */
     function submitHandler(event){
         const {
-            target:{0:{value:lName}},
-            target:{1:{value:fName}},
-            target:{2:{value:email}},
-            target:{3:{value:contactNumber}}
-        } = event
+            0:{value:lName},
+            1:{value:fName},
+            2:{value:email},
+            3:{value:contactNumber}
+        } = event.target
         event.preventDefault()
         if(validityCheck(lName,fName,email,contactNumber)){
             if(type === "Update") updateRow(current.id,fName,lName,email,contactNumber,current.email)
             else addContact(fName,lName,email,contactNumber)
             toggle(false)
         }
-    }// MUST PUT PROPER REGEX
+    }
     
     function validityCheck(lName,fName,email,contactNumber){
         let valid = true
